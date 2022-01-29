@@ -1,0 +1,32 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+  {% if newpage %}
+        New page
+   {% else %}     
+       {{ title }}
+    {% endif %}   
+{% endblock%}
+
+{% block body %}
+    {% if newpage %}
+      <h1> New page</h1>
+      <form action="{% url 'encyclopedia:CNP' %}" method="POST">
+      {% csrf_token %}
+      <input type="text" name="title" placeholder="Title" value="{{ title }}">
+      {% if error %}
+       <h3> An entry already exist with this title</h3>
+      {% endif %}
+    {% else %}     
+      <h1> {{ title }} </h1>
+      <form action="/edit/{{ title }}" method="POST">
+      {% csrf_token %}
+      <input type="text" name="title" placeholder="Title" value="{{ title }}" hidden>
+    {% endif %} 
+      <br>
+      <label for="text"> enter the Markdown content below:</label>
+      <textarea name="text" placeholder="Start with the title of the page . . .">{{ value }}</textarea>      
+      <input type="submit" value="Save">
+      </form>
+{% endblock%}
+
